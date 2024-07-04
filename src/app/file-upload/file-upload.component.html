@@ -18,7 +18,7 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="fileUpload">File Upload</label>
+      <label for="fileUpload">Audio File Upload</label>
       <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" >
     </div>
     <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Upload</button>
