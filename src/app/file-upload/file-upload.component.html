@@ -1,6 +1,38 @@
-<div class="container">
-  <h2>File Upload</h2>
+<!-- <div class="container">
+  <h3>Select your audio file. </h3>
   <input type="file" (change)="onFileSelected($event)" accept="audio/*" />
   <button (click)="onUpload()">Upload</button>
+  <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>
   <p *ngIf="message">{{ message }}</p>
+</div> -->
+
+<div class="container mt-5">
+  <form>
+    <div class="form-group">
+      <label for="modelSelect">Model</label>
+      <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
+        <option value="tiny">Tiny</option>
+        <option value="base" selected>Base</option>
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="fileUpload">File Upload</label>
+      <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" >
+    </div>
+    <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Upload</button>
+    <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>
+    <!-- <div class="form-group">
+      <label for="textArea">Text Area</label>
+      <textarea class="form-control" id="textArea" rows="3" [(ngModel)]="textAreaContent" name="textArea"></textarea>
+    </div> -->
+    <p *ngIf="message">{{ message }}</p>
+    <!-- <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div> -->
+    <app-blur-progress [isLoading]="isLoading"></app-blur-progress>
+  </form>
 </div>

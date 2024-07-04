@@ -2,3 +2,15 @@
     padding: 20px;
     min-height: calc(100vh - 140px); /* Adjust based on header and footer height */
   }
+
+/* Enhanced Page Background */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #d3c7c7; /* Light grey background as a fallback */
+  background-image: url('https://via.placeholder.com/1920x1080/87CEEB/FFFFFF');
+  background-size: cover; /* Cover the entire page */
+  background-position: center; /* Center the background image */
+  background-attachment: fixed; /* Fixed background */
+  color: #333; /* Default text color for good contrast */
+}

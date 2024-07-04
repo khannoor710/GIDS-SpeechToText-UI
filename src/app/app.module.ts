@@ -11,13 +11,17 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { FormsModule } from '@angular/forms';
+import { BlurProgressComponent } from './blur-progress/blur-progress.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
     AppComponent,
     FileUploadComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BlurProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,9 @@ import { FooterComponent } from './footer/footer.component';
     BrowserAnimationsModule, // Updated import statement
     MatFormFieldModule,
     MatInputModule,
-    HttpClientModule
+    FormsModule,
+    HttpClientModule,
+    MatProgressBarModule
   ],
   providers: [
     provideAnimationsAsync()

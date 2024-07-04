@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranscribeService } from '../services/transcribe.service';
 
+
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
@@ -10,6 +11,10 @@ import { TranscribeService } from '../services/transcribe.service';
 export class FileUploadComponent {
   selectedFile: File | null = null;
   message: string | null = null;
+  downloadUrl: string | null = null;
+  isLoading = false;
+  selectedModel="base";
+  textAreaContent = ""
 
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
@@ -26,17 +31,50 @@ export class FileUploadComponent {
       return;
     }
 
+    this.isLoading = true;
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    if (this.selectedFile) {
-      this.transcribeService.transcribeAudio(this.selectedFile).subscribe({
-        next: (response) => console.log(response),
-        error: (error) => console.error(error)
-      });
-    } else {
-      console.log('No file selected');
-    }
+    this.transcribeService.transcribeAudio(this.selectedFile).subscribe({
+      next: (response) => {
+        console.log(response);
+        const transcribedText = response.transcribed_text;
+        const blob = new Blob([transcribedText], { type: 'text/plain' });
+        const originalFileName = this.selectedFile?.name;
+        const fileNameWithoutExtension = originalFileName?.substring(0, originalFileName.lastIndexOf('.')) || originalFileName;
+        const newFileName = `${fileNameWithoutExtension}.txt`;
+        this.downloadBlob(blob, newFileName);
+        this.message = 'File transcribed successfully and downloaded.';
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.message = 'Transcription failed';
+      }
+    });
+  }
+
+  onModelChange(event:any):void{
+    const selectedModel = event.target.value;
+    this.isLoading = true; // Show loading indicator
+    this.transcribeService.selectModel(selectedModel).subscribe({
+      next: (response) => {this.message = response.message; this.isLoading = false;},
+      error: (error) => {
+        console.error(error);
+        this.message = 'Failed to switch model';
+      }
+    });
+  }
+
+  private downloadBlob(blob: Blob, filename: string): void {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a); // Append the anchor to body
+    a.click(); // Simulate click on the anchor
+    document.body.removeChild(a); // Clean up
+    window.URL.revokeObjectURL(url); // Release blob URL
   }
 
   transcribeAudio() {
