@@ -9,7 +9,7 @@
 <div class="container mt-5">
   <form>
     <div class="form-group">
-      <label for="modelSelect">Model</label>
+      <label for="modelSelect" title="Select the transcription model based on accuracy and size" style="float:left">Select Transcription Model</label>
       <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
         <option value="tiny">Tiny</option>
         <option value="base" selected>Base</option>
@@ -18,21 +18,12 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="fileUpload">Audio File Upload</label>
+      <label for="fileUpload" style="float:left">Select audio file to transcribe</label>
       <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" >
     </div>
-    <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Upload</button>
-    <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>
-    <!-- <div class="form-group">
-      <label for="textArea">Text Area</label>
-      <textarea class="form-control" id="textArea" rows="3" [(ngModel)]="textAreaContent" name="textArea"></textarea>
-    </div> -->
+    <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
+    <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>    
     <p *ngIf="message">{{ message }}</p>
-    <!-- <div *ngIf="isLoading" class="d-flex justify-content-center">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div> -->
     <app-blur-progress [isLoading]="isLoading"></app-blur-progress>
   </form>
 </div>

@@ -48,7 +48,7 @@ export class FileUploadComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error(error);
+        this.isLoading = false;
         this.message = 'Transcription failed';
       }
     });
