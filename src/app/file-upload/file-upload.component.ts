@@ -15,6 +15,7 @@ export class FileUploadComponent {
   isLoading = false;
   selectedModel="base";
   textAreaContent = ""
+  selectedFormat = 'txt';
 
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
@@ -39,12 +40,17 @@ export class FileUploadComponent {
       next: (response) => {
         console.log(response);
         const transcribedText = response.transcribed_text;
-        const blob = new Blob([transcribedText], { type: 'text/plain' });
+        // Set MIME type based on the format
+        let mimeType = 'text/plain';
+        if (this.selectedFormat === 'doc') mimeType = 'application/msword';
+        else if (this.selectedFormat === 'pdf') mimeType = 'application/pdf';
+  
+        const blob = new Blob([transcribedText], { type: mimeType });
         const originalFileName = this.selectedFile?.name;
         const fileNameWithoutExtension = originalFileName?.substring(0, originalFileName.lastIndexOf('.')) || originalFileName;
-        const newFileName = `${fileNameWithoutExtension}.txt`;
+        const newFileName = `${fileNameWithoutExtension}.${this.selectedFormat}`;
         this.downloadBlob(blob, newFileName);
-        this.message = 'File transcribed successfully and downloaded.';
+        this.message = `File transcribed successfully and downloaded as ${this.selectedFormat}.`;
         this.isLoading = false;
       },
       error: (error) => {

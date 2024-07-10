@@ -18,6 +18,14 @@
       </select>
     </div>
     <div class="form-group">
+      <label for="formatSelect" style="float:left">Select file format:</label>
+      <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format">
+        <option value="txt" selected>Text</option>
+        <option value="doc">Word</option>
+        <option value="pdf">PDF</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label for="fileUpload" style="float:left">Select audio file to transcribe</label>
       <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" >
     </div>
