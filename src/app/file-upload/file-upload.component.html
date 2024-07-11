@@ -1,36 +1,61 @@
-<!-- <div class="container">
-  <h3>Select your audio file. </h3>
-  <input type="file" (change)="onFileSelected($event)" accept="audio/*" />
-  <button (click)="onUpload()">Upload</button>
-  <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>
-  <p *ngIf="message">{{ message }}</p>
-</div> -->
-
 <div class="container mt-5">
   <form>
-    <div class="form-group">
-      <label for="modelSelect" title="Select the transcription model based on accuracy and size" style="float:left">Select Transcription Model</label>
-      <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
-        <option value="tiny">Tiny</option>
-        <option value="base" selected>Base</option>
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-      </select>
+    <!-- Transcription Model Selection -->
+    <div class="form-group row">
+      <label for="modelSelect" class="col-sm-3 col-form-label" title="Select the transcription model based on accuracy and size">Transcription Model:</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
+          <option value="tiny">Tiny</option>
+          <option value="base">Base</option>
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+        </select>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="formatSelect" style="float:left">Select file format:</label>
-      <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format">
-        <option value="txt" selected>Text</option>
-        <option value="doc">Word</option>
-        <option value="pdf">PDF</option>
-      </select>
+
+    <!-- File Upload -->
+    <div class="form-group row">
+      <label for="fileUpload" class="col-sm-3 col-form-label">Audio file:</label>
+      <div class="col-sm-8">
+        <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*">
+      </div>
     </div>
-    <div class="form-group">
-      <label for="fileUpload" style="float:left">Select audio file to transcribe</label>
-      <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" >
+
+    <!-- Action Buttons -->
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
+        <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download Transcribed Text</a>
+      </div>
     </div>
-    <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
-    <button *ngIf="downloadUrl" [attr.href]="downloadUrl" download="transcribedText.txt">Download Transcribed Text</button>    
+    <!-- Transcribed Text Display -->
+    <div class="form-group row">
+      <label for="transcribedText" class="col-sm-3 col-form-label">Transcribed Text:</label>
+      <div class="col-sm-8">
+        <textarea class="form-control" id="transcribedText" rows="15" readonly>{{ transcribedText }}</textarea>
+      </div>
+    </div>
+
+      <!-- File Format Selection -->
+      <div class="form-group row">
+        <label for="formatSelect" class="col-sm-3 col-form-label">Select file format:</label>
+        <div class="col-sm-8">
+          <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format" [disabled]="!transcribedText">
+            <option value="txt">Text</option>
+            <option value="doc">Word</option>
+            <option value="pdf">PDF</option>
+          </select>
+        </div>
+      </div>
+
+    <!-- Action Buttons -->
+    <div class="form-group row">
+      <div class="col-sm-12 text-center">
+        <button [disabled]="!transcribedText" type="button" class="btn btn-success" (click)="downloadTranscribedText()">Download Transcribed Text</button>
+      </div>
+    </div>
+
+    <!-- Messages and Progress -->
     <p *ngIf="message">{{ message }}</p>
     <app-blur-progress [isLoading]="isLoading"></app-blur-progress>
   </form>

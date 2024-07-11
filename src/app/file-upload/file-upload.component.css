@@ -1,6 +1,6 @@
 /* Container for centered content */
 .container {
-  max-width: 400px; /* Maximum width of the container */
+  max-width: 1000px; /* Maximum width of the container */
   margin: 50px auto; /* Center the container with automatic margins */
   text-align: center; /* Center-align the text */
   background-color: #fff; /* Background color for the container */

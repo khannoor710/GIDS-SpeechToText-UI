@@ -16,6 +16,7 @@ export class FileUploadComponent {
   selectedModel="base";
   textAreaContent = ""
   selectedFormat = 'txt';
+  transcribedText = '';
 
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
@@ -40,17 +41,9 @@ export class FileUploadComponent {
       next: (response) => {
         console.log(response);
         const transcribedText = response.transcribed_text;
-        // Set MIME type based on the format
-        let mimeType = 'text/plain';
-        if (this.selectedFormat === 'doc') mimeType = 'application/msword';
-        else if (this.selectedFormat === 'pdf') mimeType = 'application/pdf';
-  
-        const blob = new Blob([transcribedText], { type: mimeType });
-        const originalFileName = this.selectedFile?.name;
-        const fileNameWithoutExtension = originalFileName?.substring(0, originalFileName.lastIndexOf('.')) || originalFileName;
-        const newFileName = `${fileNameWithoutExtension}.${this.selectedFormat}`;
-        this.downloadBlob(blob, newFileName);
-        this.message = `File transcribed successfully and downloaded as ${this.selectedFormat}.`;
+        this.transcribedText = transcribedText;
+
+        this.message = `File transcribed successfully.`;
         this.isLoading = false;
       },
       error: (error) => {
@@ -81,6 +74,19 @@ export class FileUploadComponent {
     a.click(); // Simulate click on the anchor
     document.body.removeChild(a); // Clean up
     window.URL.revokeObjectURL(url); // Release blob URL
+  }
+
+  downloadTranscribedText(){
+        // Set MIME type based on the format
+        let mimeType = 'text/plain';
+        if (this.selectedFormat === 'doc') mimeType = 'application/msword';
+        else if (this.selectedFormat === 'pdf') mimeType = 'application/pdf';
+  
+        const blob = new Blob([this.transcribedText], { type: mimeType });
+        const originalFileName = this.selectedFile?.name;
+        const fileNameWithoutExtension = originalFileName?.substring(0, originalFileName.lastIndexOf('.')) || originalFileName;
+        const newFileName = `${fileNameWithoutExtension}.${this.selectedFormat}`;
+        this.downloadBlob(blob, newFileName);
   }
 
   transcribeAudio() {
