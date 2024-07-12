@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { BlurProgressComponent } from './blur-progress/blur-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { AudioService } from './services/audio.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatProgressBarModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),AudioService
   ],
   bootstrap: [AppComponent]
 })

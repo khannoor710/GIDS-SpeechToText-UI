@@ -3,6 +3,35 @@
     min-height: calc(100vh - 140px); /* Adjust based on header and footer height */
   }
 
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .microphone-img {
+    width: 100px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer;
+  }
+  
+  .microphone-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Bootstrap blue color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .microphone-btn:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
+  }  
+
 /* Enhanced Page Background */
 body {
   margin: 0;
