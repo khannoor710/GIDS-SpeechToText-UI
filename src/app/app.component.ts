@@ -1,23 +1,47 @@
+
+// app.component.ts
+
 import { Component } from '@angular/core';
-import { AudioService } from './services/audio.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subscription } from 'rxjs';
+import { AudioRecordingService } from './services/audio-recording.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'whisper-ui';
-  constructor(private audioService: AudioService) { }
+  constructor(private http: HttpClient, private audioRecordingService: AudioRecordingService) {}
 
-  async startRecordingAndTranscribe(): Promise<void> {
-    try {
-      const transcription = await this.audioService.recordAndSendToAPI();
-      console.log('Transcription:', transcription);
-      // Handle transcription result as needed
-    } catch (error) {
-      console.error('Error recording and transcribing:', error);
-      // Handle error
-    }
+  startRecording(): void {
+    this.audioRecordingService.startRecording();
+  }
+
+  stopRecording(): void {
+    this.audioRecordingService.stopRecording()
+      .then(audioBlob => {
+        this.sendDataToApi(audioBlob);
+      })
+      .catch(error => {
+        console.error('Error stopping recording:', error);
+      });
+  }
+
+  sendDataToApi(audioBlob: Blob): void {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recorded_audio.wav'); // Adjust filename and MIME type as necessary
+    console.log(formData);
+
+    // Replace with your API endpoint
+    this.http.post('http://127.0.0.1:5000/api/audio/upload', formData)
+      .subscribe(
+        response => {
+          console.log('Upload successful:', response);
+        },
+        error => {
+          console.error('Upload error:', error);
+        }
+      );
   }
 }
