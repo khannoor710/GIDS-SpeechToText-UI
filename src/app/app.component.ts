@@ -1,9 +1,10 @@
 
 // app.component.ts
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MicrophoneService } from './microphone.service';
 import { ApiService } from './api.service';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-root',
@@ -11,36 +12,35 @@ import { ApiService } from './api.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-  transcription: string = '';
+export class AppComponent implements OnInit, OnDestroy{
+  private audioDataSubscription!: Subscription;
 
-  constructor(private micService: MicrophoneService, private apiService: ApiService) {}
+  constructor(private microphoneService: MicrophoneService, private apiService: ApiService) {}
 
-  startListening() {
-    this.micService.startListening().subscribe(
-      (speech: string) => {
-        this.transcription = speech;
-        this.sendSpeechToAPI(speech);
-      },
-      (error: any) => {
-        console.error('Error in speech recognition', error);
+  ngOnInit(): void {
+    this.microphoneService.startListening();
+    this.audioDataSubscription = this.microphoneService.audioDataSubject.subscribe(
+      (audioData: Blob) => {
+        this.transcribeAudio(audioData);
       }
     );
   }
 
-  stopListening() {
-    this.micService.stopListening();
+  ngOnDestroy(): void {
+    this.microphoneService.stopListening();
+    this.audioDataSubscription.unsubscribe();
   }
 
-  sendSpeechToAPI(speech: string) {
-    this.apiService.sendSpeechToAPI(speech).subscribe(
-      response => {
-        console.log('API Response:', response);
-        // Handle response as needed
+  transcribeAudio(audioData: Blob): void {
+    this.apiService.transcribeAudio(audioData).subscribe(
+      (response) => {
+        console.log('Transcription:', response);
+        // Handle transcribed text (response) here
       },
-      error => {
-        console.error('Error sending speech to API', error);
+      (error) => {
+        console.error('Transcription error:', error);
+        // Handle error
       }
     );
-  }  
+  }
 }
