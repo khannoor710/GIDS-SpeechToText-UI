@@ -23,7 +23,13 @@ export class RecordButtonComponent {
   }
 
   stopRecording(): void {
-    this.audioRecordingService.stopRecording();
+    this.audioRecordingService.stopRecording()
+    .then(() => {
+      console.log('Recording Stopped');
+    })
+    .catch(err => {
+      console.error('Error stopped recording:', err);
+    });
   }
 }
 

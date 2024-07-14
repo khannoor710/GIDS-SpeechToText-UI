@@ -11,37 +11,46 @@ import { AudioRecordingService } from './services/audio-recording.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   constructor(private http: HttpClient, private audioRecordingService: AudioRecordingService) {}
 
-  startRecording(): void {
-    this.audioRecordingService.startRecording();
+  async startRecording(): Promise<void> {
+    try {
+      console.log("Inside start Recording");
+      debugger;
+      await this.audioRecordingService.startRecording();
+      console.log('Recording started.');
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
   }
 
-  stopRecording(): void {
-    this.audioRecordingService.stopRecording()
-      .then(audioBlob => {
-        this.sendDataToApi(audioBlob);
-      })
-      .catch(error => {
-        console.error('Error stopping recording:', error);
-      });
-  }
+  async stopRecording(): Promise<void> {
+    try {
+      console.log("Inside stop Recording");
+      debugger;
+      const audioBlob = await this.audioRecordingService.stopRecording();
+      console.log('Recording stopped. Uploading audio...');
 
-  sendDataToApi(audioBlob: Blob): void {
-    const formData = new FormData();
-    formData.append('audio', audioBlob, 'recorded_audio.wav'); // Adjust filename and MIME type as necessary
-    console.log(formData);
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recorded_audio.wav');
 
-    // Replace with your API endpoint
-    this.http.post('http://127.0.0.1:5000/api/audio/upload', formData)
-      .subscribe(
-        response => {
-          console.log('Upload successful:', response);
-        },
-        error => {
-          console.error('Upload error:', error);
-        }
-      );
+      // Replace with your actual API endpoint
+      const apiUrl = 'http://127.0.0.1:5000/api/audio/upload';
+      this.http.post(apiUrl, formData)
+        .subscribe(
+          response => {
+            console.log('Upload successful:', response);
+            // Handle transcription response as needed
+          },
+          error => {
+            console.error('Upload error:', error);
+            // Handle error as needed
+          }
+        );
+    } catch (error) {
+      console.error('Error stopping recording:', error);
+    }
   }
 }
