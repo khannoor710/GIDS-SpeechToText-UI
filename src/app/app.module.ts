@@ -14,8 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { BlurProgressComponent } from './blur-progress/blur-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { AudioRecordingService } from './services/audio-recording.service';
-import { RecordButtonComponent } from './record-button/record-button.component';
+import { SpeechButtonComponent } from './speech-button/speech-button.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,7 @@ import { RecordButtonComponent } from './record-button/record-button.component';
     HeaderComponent,
     FooterComponent,
     BlurProgressComponent,
-    RecordButtonComponent
+    SpeechButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +36,7 @@ import { RecordButtonComponent } from './record-button/record-button.component';
     MatProgressBarModule
   ],
   providers: [
-    provideAnimationsAsync(),AudioRecordingService
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

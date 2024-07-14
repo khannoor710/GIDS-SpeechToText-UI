@@ -2,9 +2,8 @@
 // app.component.ts
 
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
-import { AudioRecordingService } from './services/audio-recording.service';
+import { MicrophoneService } from './microphone.service';
+import { ApiService } from './api.service';
 
 @Component({
   selector: 'app-root',
@@ -13,44 +12,35 @@ import { AudioRecordingService } from './services/audio-recording.service';
 })
 
 export class AppComponent {
-  constructor(private http: HttpClient, private audioRecordingService: AudioRecordingService) {}
+  transcription: string = '';
 
-  async startRecording(): Promise<void> {
-    try {
-      console.log("Inside start Recording");
-      debugger;
-      await this.audioRecordingService.startRecording();
-      console.log('Recording started.');
-    } catch (error) {
-      console.error('Error starting recording:', error);
-    }
+  constructor(private micService: MicrophoneService, private apiService: ApiService) {}
+
+  startListening() {
+    this.micService.startListening().subscribe(
+      (speech: string) => {
+        this.transcription = speech;
+        this.sendSpeechToAPI(speech);
+      },
+      (error: any) => {
+        console.error('Error in speech recognition', error);
+      }
+    );
   }
 
-  async stopRecording(): Promise<void> {
-    try {
-      console.log("Inside stop Recording");
-      debugger;
-      const audioBlob = await this.audioRecordingService.stopRecording();
-      console.log('Recording stopped. Uploading audio...');
-
-      const formData = new FormData();
-      formData.append('audio', audioBlob, 'recorded_audio.wav');
-
-      // Replace with your actual API endpoint
-      const apiUrl = 'http://127.0.0.1:5000/api/audio/upload';
-      this.http.post(apiUrl, formData)
-        .subscribe(
-          response => {
-            console.log('Upload successful:', response);
-            // Handle transcription response as needed
-          },
-          error => {
-            console.error('Upload error:', error);
-            // Handle error as needed
-          }
-        );
-    } catch (error) {
-      console.error('Error stopping recording:', error);
-    }
+  stopListening() {
+    this.micService.stopListening();
   }
+
+  sendSpeechToAPI(speech: string) {
+    this.apiService.sendSpeechToAPI(speech).subscribe(
+      response => {
+        console.log('API Response:', response);
+        // Handle response as needed
+      },
+      error => {
+        console.error('Error sending speech to API', error);
+      }
+    );
+  }  
 }
