@@ -1,4 +1,6 @@
 <p>speech-button works!</p>
-<button (click)="toggleListening()">
-    {{ isListening ? 'Stop Listening' : 'Start Listening' }}
-  </button>
+<div>
+  <button (click)="toggleRecording()">{{ recording ? 'Stop' : 'Start' }} Recording</button>
+  <p *ngIf="transcript">Transcript: {{ transcript }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>

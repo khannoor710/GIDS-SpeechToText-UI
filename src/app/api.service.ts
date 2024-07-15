@@ -19,7 +19,7 @@ export class ApiService {
     const headers = new HttpHeaders();
     // headers.append('Authorization', 'Bearer your_token'); // Add authorization headers if required
 
-    return this.http.post(`${this.apiUrl}/api/audio/upload`, formData, { headers });
+    return this.http.post(`${this.apiUrl}/transcribe`, formData, { headers });
   }
 }
 

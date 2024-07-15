@@ -23,17 +23,4 @@ describe('SpeechButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should start listening', () => {
-    spyOn(component['micService'], 'startListening');
-    component.toggleListening();
-    expect(component['micService'].startListening).toHaveBeenCalled();
-  });
-
-  it('should stop listening', () => {
-    spyOn(component['micService'], 'stopListening');
-    component.toggleListening();
-    component.toggleListening();
-    expect(component['micService'].stopListening).toHaveBeenCalled();
-  });
 });
