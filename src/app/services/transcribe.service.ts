@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -30,5 +30,17 @@ export class TranscribeService {
   // Method to test if the API is working
   testApi(): Observable<any> {
     return this.http.get(`${this.baseUrl}/test`);
+  }
+
+  private apiUrl = 'http://127.0.0.1:8000';
+
+  transcribeLive(audioData: Blob): Observable<any> {
+    const formData = new FormData();
+    formData.append('audio', audioData, 'audio.wav'); // Adjust filename and type as needed
+
+    const headers = new HttpHeaders();
+    // headers.append('Authorization', 'Bearer your_token'); // Add authorization headers if required
+
+    return this.http.post(`${this.apiUrl}/transcribe`, formData, { headers });
   }
 }

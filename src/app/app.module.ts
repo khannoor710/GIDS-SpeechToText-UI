@@ -9,15 +9,15 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { FormsModule } from '@angular/forms';
-import { BlurProgressComponent } from './blur-progress/blur-progress.component';
+import { BlurProgressComponent } from './shared/blur-progress/blur-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SpeechButtonComponent } from './speech-button/speech-button.component';
 import { AudioRecorderComponent } from './audio-recorder/audio-recorder.component';
-import { TranscribeTextDisplayComponent } from './transcribe-text-display/transcribe-text-display.component';
-import { HomeComponent } from './home/home.component';
+import { TranscribeTextDisplayComponent } from './shared/transcribe-text-display/transcribe-text-display.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
