@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranscribeService } from '../services/transcribe.service';
 
@@ -9,6 +9,7 @@ import { TranscribeService } from '../services/transcribe.service';
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent {
+  @Output() transcriptionComplete: EventEmitter<string> = new EventEmitter();
   selectedFile: File | null = null;
   message: string | null = null;
   downloadUrl: string | null = null;
@@ -42,6 +43,7 @@ export class FileUploadComponent {
         console.log(response);
         const transcribedText = response.transcribed_text;
         this.transcribedText = transcribedText;
+        this.transcriptionComplete.emit(this.transcribedText);
 
         this.message = `File transcribed successfully.`;
         this.isLoading = false;

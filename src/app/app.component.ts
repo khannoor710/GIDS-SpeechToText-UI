@@ -18,29 +18,10 @@ export class AppComponent implements OnInit, OnDestroy{
   constructor(private microphoneService: MicrophoneService, private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.microphoneService.startListening();
-    this.audioDataSubscription = this.microphoneService.audioDataSubject.subscribe(
-      (audioData: Blob) => {
-        this.transcribeAudio(audioData);
-      }
-    );
+    
   }
 
   ngOnDestroy(): void {
-    this.microphoneService.stopListening();
-    this.audioDataSubscription.unsubscribe();
-  }
-
-  transcribeAudio(audioData: Blob): void {
-    this.apiService.transcribeAudio(audioData).subscribe(
-      (response) => {
-        console.log('Transcription:', response);
-        // Handle transcribed text (response) here
-      },
-      (error) => {
-        console.error('Transcription error:', error);
-        // Handle error
-      }
-    );
+    
   }
 }

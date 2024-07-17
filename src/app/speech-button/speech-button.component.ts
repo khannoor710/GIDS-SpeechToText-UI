@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import Recorder from 'recorder-js';
+// import Recorder from 'recorder-js';
 
 @Component({
   selector: 'app-speech-button',
@@ -8,7 +8,7 @@ import Recorder from 'recorder-js';
   styleUrls: ['./speech-button.component.css']
 })
 export class SpeechButtonComponent implements OnInit, OnDestroy {
-  private recorder!: Recorder; // Definite assignment assertion
+  // private recorder!: Recorder; // Definite assignment assertion
   recording = false;
   transcript: string | null = null;
   errorMessage: string | null = null;
@@ -17,8 +17,8 @@ export class SpeechButtonComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    this.recorder = new Recorder(this.audioContext);
+    // this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    // this.recorder = new Recorder(this.audioContext);
   }
 
   ngOnDestroy(): void {
@@ -36,26 +36,26 @@ export class SpeechButtonComponent implements OnInit, OnDestroy {
   }
 
   startRecording(): void {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
-        this.recorder.init(stream);
-        this.recorder.start();
-        this.recording = true;
-      })
-      .catch(err => {
-        this.errorMessage = 'Could not start recording: ' + err.message;
-      });
+    // navigator.mediaDevices.getUserMedia({ audio: true })
+    //   .then(stream => {
+    //     this.recorder.init(stream);
+    //     this.recorder.start();
+    //     this.recording = true;
+    //   })
+    //   .catch(err => {
+    //     this.errorMessage = 'Could not start recording: ' + err.message;
+    //   });
   }
 
   stopRecording(): void {
-    this.recorder.stop()
-      .then(({ blob }: { blob: Blob }) => {
-        this.recording = false;
-        this.sendAudio(blob);
-      })
-      .catch(err => {
-        this.errorMessage = 'Could not stop recording: ' + err.message;
-      });
+    // this.recorder.stop()
+    //   .then(({ blob }: { blob: Blob }) => {
+    //     this.recording = false;
+    //     this.sendAudio(blob);
+    //   })
+    //   .catch(err => {
+    //     this.errorMessage = 'Could not stop recording: ' + err.message;
+    //   });
   }
 
   sendAudio(blob: Blob): void {

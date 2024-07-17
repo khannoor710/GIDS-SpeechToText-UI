@@ -15,6 +15,9 @@ import { FormsModule } from '@angular/forms';
 import { BlurProgressComponent } from './blur-progress/blur-progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SpeechButtonComponent } from './speech-button/speech-button.component';
+import { AudioRecorderComponent } from './audio-recorder/audio-recorder.component';
+import { TranscribeTextDisplayComponent } from './transcribe-text-display/transcribe-text-display.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { SpeechButtonComponent } from './speech-button/speech-button.component';
     HeaderComponent,
     FooterComponent,
     BlurProgressComponent,
-    SpeechButtonComponent
+    SpeechButtonComponent,
+    AudioRecorderComponent,
+    TranscribeTextDisplayComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

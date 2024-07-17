@@ -28,13 +28,6 @@
         <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download Transcribed Text</a>
       </div>
     </div>
-    <!-- Transcribed Text Display -->
-    <div class="form-group row">
-      <label for="transcribedText" class="col-sm-3 col-form-label">Transcribed Text:</label>
-      <div class="col-sm-8">
-        <textarea class="form-control" id="transcribedText" rows="15" readonly>{{ transcribedText }}</textarea>
-      </div>
-    </div>
 
       <!-- File Format Selection -->
       <div class="form-group row">
