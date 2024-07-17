@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TranscribeService {
-  private baseUrl = 'http://localhost:8080/api'; // Adjust if your API is hosted elsewhere
+  private baseUrl = 'http://127.0.0.1:8080/api'; // Adjust if your API is hosted elsewhere
 
   constructor(private http: HttpClient) { }
 
