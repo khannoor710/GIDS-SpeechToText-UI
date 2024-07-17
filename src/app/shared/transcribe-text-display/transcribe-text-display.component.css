@@ -12,3 +12,9 @@
 {
     width: 100%;
 }
+
+.text-style 
+{
+    font-size: 24px;
+    font-weight: bold;
+}
