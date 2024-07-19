@@ -1,7 +1,11 @@
 <app-header></app-header>
-<main class="container mt-5 main-content">
-  <app-file-upload (transcriptionComplete)="transcribedText = $event"></app-file-upload>
-  <app-audio-recorder (transcriptionComplete)="transcribedText = $event"></app-audio-recorder>
+<main class="maindisplay">
+  <div>
+    <app-file-upload (transcriptionComplete)="transcribedText = $event"></app-file-upload>
+  
+    <app-audio-recorder (transcriptionComplete)="transcribedText = $event"></app-audio-recorder>
+  </div>
+ 
   <app-transcribe-text-display [transcribedText]="transcribedText"></app-transcribe-text-display>
   <!-- <app-speech-button></app-speech-button> -->
 </main>

@@ -32,7 +32,7 @@ export class TranscribeService {
     return this.http.get(`${this.baseUrl}/test`);
   }
 
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = 'http://127.0.0.1:5000';
 
   transcribeLive(audioData: Blob): Observable<any> {
     const formData = new FormData();

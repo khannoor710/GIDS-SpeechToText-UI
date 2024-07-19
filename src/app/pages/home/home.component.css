@@ -1,0 +1,8 @@
+.maindisplay{
+    display: flex;
+    padding: 0 1.5rem;
+}
+
+.maindisplay > div {
+    width: 50%;
+}

@@ -3,13 +3,13 @@
     min-height: calc(100vh - 140px); /* Adjust based on header and footer height */
   }
 
-  .container {
+  /* .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-  }
+  } */
   
   .microphone-img {
     width: 100px; /* Adjust size as needed */
