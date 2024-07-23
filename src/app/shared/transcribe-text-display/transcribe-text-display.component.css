@@ -1,10 +1,9 @@
 .third-div-alignment {
     flex-direction: column;
     align-items: center;
-    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    margin: 50px 0px;
+    margin: 25px 0px;
 }
 
 .trans-align
@@ -19,6 +18,11 @@
 }
 :host{
     width: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1.1);
     padding: 0 1rem;
+}
+
+.trans-align{
+    text-align: center;
+    font: 124 1.812rem / 3.25rem Arial, sans-serif
 }
