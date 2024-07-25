@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranscribeService } from '../services/transcribe.service';
-
+import { saveAs } from 'file-saver';
+import { PDFDocument, rgb } from 'pdf-lib';
+import { BlobWriter, TextReader, ZipWriter } from '@zip.js/zip.js';
+import JSZip from 'jszip';
 
 @Component({
   selector: 'app-file-upload',
@@ -14,10 +17,11 @@ export class FileUploadComponent {
   message: string | null = null;
   downloadUrl: string | null = null;
   isLoading = false;
-  selectedModel="base";
-  textAreaContent = ""
+  selectedModel = "base";
+  textAreaContent = "";
   selectedFormat = 'txt';
   transcribedText = '';
+  password = 'yourpassword'; // Define your password here
 
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
@@ -55,11 +59,11 @@ export class FileUploadComponent {
     });
   }
 
-  onModelChange(event:any):void{
+  onModelChange(event: any): void {
     const selectedModel = event.target.value;
     this.isLoading = true; // Show loading indicator
     this.transcribeService.selectModel(selectedModel).subscribe({
-      next: (response) => {this.message = response.message; this.isLoading = false;},
+      next: (response) => { this.message = response.message; this.isLoading = false; },
       error: (error) => {
         console.error(error);
         this.message = 'Failed to switch model';
@@ -78,17 +82,44 @@ export class FileUploadComponent {
     window.URL.revokeObjectURL(url); // Release blob URL
   }
 
-  downloadTranscribedText(){
-        // Set MIME type based on the format
-        let mimeType = 'text/plain';
-        if (this.selectedFormat === 'doc') mimeType = 'application/msword';
-        else if (this.selectedFormat === 'pdf') mimeType = 'application/pdf';
-  
-        const blob = new Blob([this.transcribedText], { type: mimeType });
-        const originalFileName = this.selectedFile?.name;
-        const fileNameWithoutExtension = originalFileName?.substring(0, originalFileName.lastIndexOf('.')) || originalFileName;
-        const newFileName = `${fileNameWithoutExtension}.${this.selectedFormat}`;
-        this.downloadBlob(blob, newFileName);
+  async downloadTranscribedText() {
+      const formData = new FormData();
+      debugger;
+      const body = { transcribedText:this.transcribedText};
+      // Replace 'your-audio-file.mp3' with the actual file
+      this.http.post('http://localhost:8080/api/download', body, {
+        responseType: 'blob', // Important for file downloads
+      }).subscribe((response: Blob) => {
+        saveAs(response, 'protected_transcript.zip');
+      }, error => {
+        console.error('Error downloading file', error);
+      });
+  }
+
+  async generatePasswordProtectedZip(text: string, mimeType: string, password: string): Promise<Blob> {
+    const writer = new BlobWriter("application/zip");
+    const zipWriter = new ZipWriter(writer, { password });
+    const fileName = this.selectedFile?.name || 'document.txt';
+
+    await zipWriter.add(fileName, new TextReader(text));
+    await zipWriter.close();
+    return writer.getData();
+  }
+
+  async generatePasswordProtectedPdf(text: string, password: string): Promise<Blob> {
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([600, 400]);
+    page.drawText(text, {
+      x: 50,
+      y: 350,
+      size: 30,
+      color: rgb(0, 0, 0),
+    });
+
+    const pdfBytes = await pdfDoc.save();
+    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+    return pdfBlob;
   }
 
   transcribeAudio() {
@@ -100,6 +131,18 @@ export class FileUploadComponent {
     } else {
       console.log('No file selected');
     }
+  }
+
+  async createZip(fileName: string, content: string): Promise<Blob> {
+    const zip = new JSZip();
+    
+    // Add the text file to the zip
+    zip.file(fileName, content);
+    
+    // Generate the zip as a Blob
+    const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    
+    return zipBlob;
   }
 
   switchModel(modelName: string) {
