@@ -83,14 +83,14 @@ export class FileUploadComponent {
   }
 
   async downloadTranscribedText() {
-      const formData = new FormData();
-      debugger;
+      this.isLoading = true;
       const body = { transcribedText:this.transcribedText};
       // Replace 'your-audio-file.mp3' with the actual file
       this.http.post('http://localhost:8080/api/download', body, {
         responseType: 'blob', // Important for file downloads
       }).subscribe((response: Blob) => {
         saveAs(response, 'protected_transcript.zip');
+        this.isLoading = false;
       }, error => {
         console.error('Error downloading file', error);
       });

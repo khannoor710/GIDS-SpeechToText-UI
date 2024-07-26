@@ -3,10 +3,10 @@
 
     <button class="btn btn-danger" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Stop Recording</button>
 
-    <button class="btn btn-secondary" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
+    <button class="btn btn-secondary spaced-button" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
 
     <br>
-    <button class="btn btn-secondary" *ngIf="!isRecording && blobUrl" (click)="download()">Download Recording</button>
+    <button class="btn btn-secondary spaced-button" *ngIf="!isRecording && blobUrl" (click)="download()">Download Recording</button>
 
     <div *ngIf="isRecording && !blobUrl"> {{recordedTime}} </div>
     <div>
