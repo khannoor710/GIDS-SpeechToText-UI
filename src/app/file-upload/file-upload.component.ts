@@ -19,8 +19,9 @@ export class FileUploadComponent {
   selectedFormat = 'txt';
   transcribedText = '';
   password = 'yourpassword'; // Define your password here
+  voiceType = 'Medium Voice'; // Default voice type
 
-  constructor(private http: HttpClient, private transcribeService: TranscribeService) { }
+  constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -60,22 +61,56 @@ export class FileUploadComponent {
     const selectedModel = event.target.value;
     this.isLoading = true; // Show loading indicator
     this.transcribeService.selectModel(selectedModel).subscribe({
-      next: (response) => { this.message = response.message; this.isLoading = false; },
+      next: (response) => { 
+        this.message = response.message;
+        this.isLoading = false;
+        this.updateVoiceType(selectedModel); // Update voice type based on selected model
+      },
       error: (error) => {
         console.error(error);
         this.message = 'Failed to switch model';
       }
     });
   }
+
+  updateVoiceType(modelName: string): void {
+    switch (modelName) {
+      case 'tiny':
+        this.voiceType = 'Voice easy to understand';
+        break;
+      case 'base':
+        this.voiceType = 'Little tough to understand';
+        break;
+      case 'small':
+        this.voiceType = 'Having an unusually harsh sound';
+        break;
+      case 'medium':
+        this.voiceType = 'Very tough to understand';
+        break;
+      default:
+        this.voiceType = 'Unknown Voice';
+        break;
+    }
+  }
+
+  private downloadBlob(blob: Blob, filename: string): void {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a); // Append the anchor to body
+    a.click(); // Simulate click on the anchor
+    document.body.removeChild(a); // Clean up
+    window.URL.revokeObjectURL(url); // Release blob URL
+  }
+
   async downloadTranscribedText() {
-    this.isLoading = true;
+    const formData = new FormData();
     const body = { transcribedText: this.transcribedText, fileType: this.selectedFormat };
-    // Replace 'your-audio-file.mp3' with the actual file
     this.http.post('http://localhost:8080/api/download', body, {
       responseType: 'blob', // Important for file downloads
     }).subscribe((response: Blob) => {
       saveAs(response, 'protected_transcript.zip');
-      this.isLoading = false;
     }, error => {
       console.error('Error downloading file', error);
     });
@@ -91,7 +126,6 @@ export class FileUploadComponent {
       console.log('No file selected');
     }
   }
-
 
   switchModel(modelName: string) {
     this.transcribeService.selectModel(modelName).subscribe({
@@ -112,5 +146,30 @@ export class FileUploadComponent {
       next: (response) => console.log(response),
       error: (error) => console.error(error)
     });
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target as HTMLElement;
+    target.classList.add('drag-over');
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target as HTMLElement;
+    target.classList.remove('drag-over');
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target as HTMLElement;
+    target.classList.remove('drag-over');
+
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      this.selectedFile = event.dataTransfer.files[0];
+    }
   }
 }

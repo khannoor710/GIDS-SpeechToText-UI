@@ -1,23 +1,35 @@
 <div class="mt-5 uploaddisplay">
   <form>
+    <!-- Display Voice Type -->
+    <div class="form-group row">
+      <label for="voiceType" class="col-sm-3 col-form-label" title="Voice Type">Voice Type:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="voiceType" [(ngModel)]="voiceType" name="voiceType" readonly>
+      </div>
+    </div>
     <!-- Transcription Model Selection -->
     <div class="form-group row">
       <label for="modelSelect" class="col-sm-3 col-form-label" title="Select the transcription model based on accuracy and size">Transcription Model:</label>
       <div class="col-sm-8">
         <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
-          <option value="tiny">Usual Voice</option>
-          <option value="base">Moderate Voice</option>
-          <option value="small">Vulnerable voice</option>
-          <option value="medium">Immature voice</option>
+          <option value="tiny">Normal Voice</option>
+          <option value="base">Medium Voice</option>
+          <option value="small">Harsh Voice</option>
+          <option value="medium">Complex Voice</option>
         </select>
       </div>
     </div>
 
-    <!-- File Upload -->
+    <!-- File Upload with Drag and Drop and Attach -->
     <div class="form-group row">
       <label for="fileUpload" class="col-sm-3 col-form-label">Audio file:</label>
       <div class="col-sm-8">
-        <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*">
+        <div class="upload-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+          <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" hidden>
+          <label for="fileUpload" class="btn btn-secondary btn-attach">+ Attach</label>
+          <p *ngIf="!selectedFile" class="drag-text">Drag & Drop file here or click + Attach</p>
+          <p *ngIf="selectedFile">{{ selectedFile.name }}</p>
+        </div>
       </div>
     </div>
 
@@ -29,17 +41,17 @@
       </div>
     </div>
 
-      <!-- File Format Selection -->
-      <div class="form-group row">
-        <label for="formatSelect" class="col-sm-3 col-form-label">Select file format:</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format" [disabled]="!transcribedText">
-            <option value="txt">Text</option>
-            <option value="doc">Word</option>
-            <option value="pdf">PDF</option>
-          </select>
-        </div>
+    <!-- File Format Selection -->
+    <div class="form-group row">
+      <label for="formatSelect" class="col-sm-3 col-form-label">Select file format:</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format" [disabled]="!transcribedText">
+          <option value="txt">Text</option>
+          <option value="doc">Word</option>
+          <option value="pdf">PDF</option>
+        </select>
       </div>
+    </div>
 
     <!-- Action Buttons -->
     <div class="form-group row">
