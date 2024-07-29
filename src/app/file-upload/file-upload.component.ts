@@ -20,6 +20,10 @@ export class FileUploadComponent {
   transcribedText = '';
   password = 'yourpassword'; // Define your password here
   voiceType = 'Medium Voice'; // Default voice type
+  recording = false; // Track recording status
+
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
 
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
@@ -38,7 +42,7 @@ export class FileUploadComponent {
 
     this.isLoading = true;
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
+    formData.append('audio', this.selectedFile);
 
     this.transcribeService.transcribeAudio(this.selectedFile).subscribe({
       next: (response) => {
@@ -116,36 +120,50 @@ export class FileUploadComponent {
     });
   }
 
-  transcribeAudio() {
-    if (this.selectedFile) {
-      this.transcribeService.transcribeAudio(this.selectedFile).subscribe({
-        next: (response) => console.log(response),
-        error: (error) => console.error(error)
-      });
-    } else {
-      console.log('No file selected');
+  startRecording(): void {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          this.mediaRecorder = new MediaRecorder(stream);
+          this.audioChunks = [];
+          
+          this.mediaRecorder.ondataavailable = event => {
+            this.audioChunks.push(event.data);
+          };
+
+          this.mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            this.transcribeService.transcribeLive(audioBlob).subscribe({
+              next: (response) => {
+                this.transcribedText = response.transcribed_text;
+                this.transcriptionComplete.emit(this.transcribedText);
+              },
+              error: (error) => {
+                console.error('Live transcription failed', error);
+              }
+            });
+          };
+
+          this.mediaRecorder.start();
+          this.recording = true; // Update recording status
+        })
+        .catch(error => console.error('Recording failed', error));
     }
   }
 
-  switchModel(modelName: string) {
-    this.transcribeService.selectModel(modelName).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error)
-    });
+  stopRecording(): void {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+      this.recording = false; // Update recording status
+    }
   }
 
-  getCurrentModel() {
-    this.transcribeService.getCurrentModel().subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error)
-    });
-  }
-
-  testApi() {
-    this.transcribeService.testApi().subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error)
-    });
+  toggleRecording(): void {
+    if (this.recording) {
+      this.stopRecording();
+    } else {
+      this.startRecording();
+    }
   }
 
   onDragOver(event: DragEvent): void {

@@ -10,9 +10,10 @@ export class TranscribeService {
 
   constructor(private http: HttpClient) { }
 
+  // Method to transcribe audio files (e.g., file uploads)
   transcribeAudio(file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('audio', file); // Ensure 'file' matches the key your Flask API expects
+    formData.append('audio', file); // Ensure 'audio' matches the key your Flask API expects
 
     return this.http.post(`${this.baseUrl}/transcription`, formData);
   }
@@ -32,15 +33,10 @@ export class TranscribeService {
     return this.http.get(`${this.baseUrl}/test`);
   }
 
-  private apiUrl = 'http://127.0.0.1:5000';
-
+  // Method for live audio transcription
   transcribeLive(audioData: Blob): Observable<any> {
     const formData = new FormData();
     formData.append('audio', audioData, 'audio.wav'); // Adjust filename and type as needed
-
-    const headers = new HttpHeaders();
-    // headers.append('Authorization', 'Bearer your_token'); // Add authorization headers if required
-
-    return this.http.post(`${this.apiUrl}/transcribe`, formData, { headers });
+    return this.http.post(`${this.baseUrl}/transcribe-live`, formData); // Ensure endpoint is correct
   }
 }

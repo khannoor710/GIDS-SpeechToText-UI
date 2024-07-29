@@ -9,9 +9,11 @@
     </div>
     <!-- Transcription Model Selection -->
     <div class="form-group row">
-      <label for="modelSelect" class="col-sm-3 col-form-label" title="Select the transcription model based on accuracy and size">Transcription Model:</label>
+      <label for="modelSelect" class="col-sm-3 col-form-label"
+        title="Select the transcription model based on accuracy and size">Transcription Model:</label>
       <div class="col-sm-8">
-        <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model" (change)="onModelChange($event)">
+        <select class="form-control" id="modelSelect" [(ngModel)]="selectedModel" name="model"
+          (change)="onModelChange($event)">
           <option value="tiny">Normal Voice</option>
           <option value="base">Medium Voice</option>
           <option value="small">Harsh Voice</option>
@@ -24,8 +26,10 @@
     <div class="form-group row">
       <label for="fileUpload" class="col-sm-3 col-form-label">Audio file:</label>
       <div class="col-sm-8">
-        <div class="upload-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
-          <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)" accept="audio/*" hidden>
+        <div class="upload-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)">
+          <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)"
+            accept="audio/*" hidden>
           <label for="fileUpload" class="btn btn-secondary btn-attach">+ Attach</label>
           <p *ngIf="!selectedFile" class="drag-text">Drag & Drop file here or click + Attach</p>
           <p *ngIf="selectedFile">{{ selectedFile.name }}</p>
@@ -37,7 +41,8 @@
     <div class="form-group row">
       <div class="col-sm-12 submitbtnalign">
         <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
-        <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download Transcribed Text</a>
+        <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download
+          Transcribed Text</a>
       </div>
     </div>
 
@@ -45,7 +50,8 @@
     <div class="form-group row">
       <label for="formatSelect" class="col-sm-3 col-form-label">Select file format:</label>
       <div class="col-sm-8">
-        <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format" [disabled]="!transcribedText">
+        <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format"
+          [disabled]="!transcribedText">
           <option value="txt">Text</option>
           <option value="doc">Word</option>
           <option value="pdf">PDF</option>
@@ -56,10 +62,10 @@
     <!-- Action Buttons -->
     <div class="form-group row">
       <div class="col-sm-12 text-center">
-        <button [disabled]="!transcribedText" type="button" class="btn btn-success" (click)="downloadTranscribedText()">Download Transcribed Text</button>
+        <button [disabled]="!transcribedText" type="button" class="btn btn-success"
+          (click)="downloadTranscribedText()">Download Transcribed Text</button>
       </div>
     </div>
-
     <!-- Messages and Progress -->
     <p *ngIf="message">{{ message }}</p>
     <app-blur-progress [isLoading]="isLoading"></app-blur-progress>
