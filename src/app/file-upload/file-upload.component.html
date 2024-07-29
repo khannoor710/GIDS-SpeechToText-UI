@@ -66,6 +66,16 @@
           (click)="downloadTranscribedText()">Download Transcribed Text</button>
       </div>
     </div>
+
+    <!-- Start/Stop Recording -->
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Live Recording:</label>
+      <div class="col-sm-8">
+        <button type="button" class="btn btn-primary" (click)="toggleRecording()">{{ recording ? 'Stop' : 'Start' }}
+          Recording</button>
+      </div>
+    </div>
+
     <!-- Messages and Progress -->
     <p *ngIf="message">{{ message }}</p>
     <app-blur-progress [isLoading]="isLoading"></app-blur-progress>
