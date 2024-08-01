@@ -26,3 +26,50 @@
     text-align: center;
     font: 124 1.812rem / 3.25rem Arial, sans-serif
 }
+
+.align-items-center {
+    display: flex;
+    align-items: center;
+}
+
+/* Button styling */
+button {
+    padding: 10px 20px; /* Padding for a larger click area */
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  .submitbtnalign{
+    display: flex;
+    justify-content: center;
+  }
+
+/* Add styles for the new attach button */
+.btn-attach {
+    background-color: #007bff;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    user-select: none;
+  }
+  
+  .btn-attach:hover {
+    background-color: #0056b3;
+  }

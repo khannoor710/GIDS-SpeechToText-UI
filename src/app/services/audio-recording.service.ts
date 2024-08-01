@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import * as RecordRTC from "recordrtc";
 import moment from "moment";
 import { Observable, Subject } from "rxjs";
-import { ApiService } from "./api.service";
+import { TranscribeService } from "./transcribe.service";
 
 interface RecordedAudioOutput {
   blob: Blob;
@@ -23,7 +23,7 @@ export class AudioRecordingService {
   private _recordingTime = new Subject<string>();
   private _recordingFailed = new Subject<string>();
 
-  constructor(private apiService: ApiService) {}
+  constructor(private transcribeService: TranscribeService) {}
 
   getRecordedBlob(): Observable<RecordedAudioOutput> {
     return this._recorded.asObservable();
@@ -102,10 +102,10 @@ export class AudioRecordingService {
 
             // Replace 'your_whisper_api_endpoint' with the actual endpoint
             // and adjust the method and body as per your API requirements
-            this.apiService.transcribeAudio(blob).subscribe({
+            this.transcribeService.transcribeLive(blob).subscribe({
               next: (response) => {
                 console.log('Whisper API response:', response);
-                this._transcribedText.next(response.transcript);
+                this._transcribedText.next(response.transcribed_text);
               },
               error: (error) => {
                 console.error('Whisper API error:', error);

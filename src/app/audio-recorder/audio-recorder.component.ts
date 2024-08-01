@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { AudioRecordingService } from "../audio-recording.service";
+import { AudioRecordingService } from "../services/audio-recording.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Subscription } from 'rxjs';
 

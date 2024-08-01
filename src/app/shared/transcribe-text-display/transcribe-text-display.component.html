@@ -3,4 +3,27 @@
     <div class="trans-align">
       <textarea class="form-control" id="transcribedText" rows="15" readonly>{{ transcribedText }}</textarea>
     </div>
+
+    <div class="third-div-alignment">
+    <!-- File Format Selection -->
+    <div class="form-group row align-items-center">
+      <label for="formatSelect" class="col-sm-3 col-form-label">Format:</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="formatSelect" [(ngModel)]="selectedFormat" name="format"
+          [disabled]="!transcribedText">
+          <option value="txt">Text</option>
+          <option value="doc">Word</option>
+          <option value="pdf">PDF</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-group row">
+      <div class="col-sm-12 text-center">
+        <button [disabled]="!transcribedText" type="button" class="btn btn-success"
+        (click)="downloadTranscribedText()">Download Transcribed Text</button>
+      </div>
+    </div>
   </div>
+</div>

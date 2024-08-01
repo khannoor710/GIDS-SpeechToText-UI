@@ -39,4 +39,12 @@ export class TranscribeService {
     formData.append('audio', audioData, 'audio.wav'); // Adjust filename and type as needed
     return this.http.post(`${this.baseUrl}/transcribe-live`, formData); // Ensure endpoint is correct
   }
+
+  //add code to download the transcribed text
+  downloadTranscript(transcribedText: string, fileType: string): Observable<any> {
+    const body = { transcribedText: transcribedText, fileType: fileType };
+    return this.http.post('http://localhost:8080/api/download', body, {
+      responseType: 'blob', // Important for file downloads
+    });
+  }
 }

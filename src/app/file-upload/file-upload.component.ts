@@ -16,7 +16,6 @@ export class FileUploadComponent {
   isLoading = false;
   selectedModel = "base";
   textAreaContent = "";
-  selectedFormat = 'txt';
   transcribedText = '';
   password = 'yourpassword'; // Define your password here
   voiceType = 'Medium Voice'; // Default voice type
@@ -106,64 +105,6 @@ export class FileUploadComponent {
     a.click(); // Simulate click on the anchor
     document.body.removeChild(a); // Clean up
     window.URL.revokeObjectURL(url); // Release blob URL
-  }
-
-  async downloadTranscribedText() {
-    const formData = new FormData();
-    const body = { transcribedText: this.transcribedText, fileType: this.selectedFormat };
-    this.http.post('http://localhost:8080/api/download', body, {
-      responseType: 'blob', // Important for file downloads
-    }).subscribe((response: Blob) => {
-      saveAs(response, 'protected_transcript.zip');
-    }, error => {
-      console.error('Error downloading file', error);
-    });
-  }
-
-  startRecording(): void {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          this.mediaRecorder = new MediaRecorder(stream);
-          this.audioChunks = [];
-          
-          this.mediaRecorder.ondataavailable = event => {
-            this.audioChunks.push(event.data);
-          };
-
-          this.mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-            this.transcribeService.transcribeLive(audioBlob).subscribe({
-              next: (response) => {
-                this.transcribedText = response.transcribed_text;
-                this.transcriptionComplete.emit(this.transcribedText);
-              },
-              error: (error) => {
-                console.error('Live transcription failed', error);
-              }
-            });
-          };
-
-          this.mediaRecorder.start();
-          this.recording = true; // Update recording status
-        })
-        .catch(error => console.error('Recording failed', error));
-    }
-  }
-
-  stopRecording(): void {
-    if (this.mediaRecorder) {
-      this.mediaRecorder.stop();
-      this.recording = false; // Update recording status
-    }
-  }
-
-  toggleRecording(): void {
-    if (this.recording) {
-      this.stopRecording();
-    } else {
-      this.startRecording();
-    }
   }
 
   onDragOver(event: DragEvent): void {
