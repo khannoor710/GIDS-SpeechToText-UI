@@ -1,14 +1,7 @@
 <div class="mt-5 uploaddisplay">
   <form>
-    <!-- Display Voice Type -->
-    <div class="form-group row">
-      <label for="voiceType" class="col-sm-3 col-form-label" title="Voice Type">Voice Type:</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="voiceType" [(ngModel)]="voiceType" name="voiceType" readonly>
-      </div>
-    </div>
-    <!-- Transcription Model Selection -->
-    <div class="form-group row">
+     <!-- Transcription Model Selection -->
+     <div class="form-group row">
       <label for="modelSelect" class="col-sm-3 col-form-label"
         title="Select the transcription model based on accuracy and size">Transcription Model:</label>
       <div class="col-sm-8">
@@ -21,7 +14,13 @@
         </select>
       </div>
     </div>
-
+    <!-- Display Voice Type -->
+    <div class="form-group row">
+      <label for="voiceType" class="col-sm-3 col-form-label" title="Voice Type">Voice Type:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="voiceType" [(ngModel)]="voiceType" name="voiceType" readonly>
+      </div>
+    </div>
     <!-- File Upload with Drag and Drop and Attach -->
     <div class="form-group row">
       <label for="fileUpload" class="col-sm-3 col-form-label">Audio file:</label>
@@ -39,7 +38,8 @@
 
     <!-- Action Buttons -->
     <div class="form-group row">
-      <div class="col-sm-12 submitbtnalign">
+      <label class="col-sm-3 col-form-label" ></label>
+      <div class="col-sm-8">
         <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
         <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download
           Transcribed Text</a>

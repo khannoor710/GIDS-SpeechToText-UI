@@ -105,8 +105,13 @@ input[type="file"] {
 
 .upload-container .btn-attach {
   margin-top: 10px;
+  width: 130px;
 }
 
 .drag-text {
   margin-top: 10px;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  width: 150px;
 }
