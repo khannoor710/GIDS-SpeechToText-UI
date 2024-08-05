@@ -28,10 +28,12 @@
         <div class="upload-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
           (dragleave)="onDragLeave($event)">
           <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)"
-            accept="audio/*" hidden>
+            accept="audio/*" multiple hidden>
           <label for="fileUpload" class="btn btn-secondary btn-attach">+ Attach</label>
-          <p *ngIf="!selectedFile" class="drag-text">Drag & Drop file here or click + Attach</p>
-          <p *ngIf="selectedFile">{{ selectedFile.name }}</p>
+          <p *ngIf="selectedFiles.length === 0" class="drag-text">Drag & Drop files here or click + Attach</p>
+          <ul>
+            <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -39,8 +41,8 @@
     <!-- Action Buttons -->
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" ></label>
-      <div class="col-sm-8">
-        <button [disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
+      <div class="col-sm-8 btnalign">
+        <button [disabled]="selectedFiles.length === 0" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
         <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download
           Transcribed Text</a>
       </div>

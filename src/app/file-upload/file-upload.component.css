@@ -19,7 +19,7 @@ input[type="file"] {
 
 /* Button styling */
 button {
-  padding: 10px 20px; /* Padding for a larger click area */
+  padding: 10px 40px; /* Padding for a larger click area */
   background-color: #007bff; /* Primary button color */
   color: white; /* Text color */
   border: none; /* Remove default border */
@@ -113,5 +113,9 @@ input[type="file"] {
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-  width: 150px;
+  width: 135px;
+}
+
+.btnalign{
+  text-align: center;
 }

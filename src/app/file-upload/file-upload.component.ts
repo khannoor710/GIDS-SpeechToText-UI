@@ -10,7 +10,7 @@ import { saveAs } from 'file-saver';
 })
 export class FileUploadComponent {
   @Output() transcriptionComplete: EventEmitter<string> = new EventEmitter();
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
   message: string | null = null;
   downloadUrl: string | null = null;
   isLoading = false;
@@ -27,30 +27,31 @@ export class FileUploadComponent {
   constructor(private http: HttpClient, private transcribeService: TranscribeService) {}
 
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+    const files: FileList = event.target.files;
+    if (files.length > 0) {
+      this.selectedFiles = Array.from(files);
     }
   }
 
   onUpload(): void {
-    if (!this.selectedFile) {
+    if (this.selectedFiles.length === 0) {
       this.message = 'No file selected';
       return;
     }
 
     this.isLoading = true;
     const formData = new FormData();
-    formData.append('audio', this.selectedFile);
+    this.selectedFiles.forEach(file => formData.append('audio', file));
 
-    this.transcribeService.transcribeAudio(this.selectedFile).subscribe({
+    this.transcribeService.transcribeMultipleAudios(formData).subscribe({
       next: (response) => {
         console.log(response);
-        const transcribedText = response.transcribed_text;
-        this.transcribedText = transcribedText;
+        response.transcriptions.forEach(transcription => {
+          this.transcribedText += `File: ${transcription.file_name}\nTranscription: ${transcription.transcribed_text}\n\n`;
+        });
         this.transcriptionComplete.emit(this.transcribedText);
 
-        this.message = `File transcribed successfully.`;
+        this.message = `Files transcribed successfully.`;
         this.isLoading = false;
       },
       error: (error) => {
@@ -128,7 +129,7 @@ export class FileUploadComponent {
     target.classList.remove('drag-over');
 
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      this.selectedFile = event.dataTransfer.files[0];
+      this.selectedFiles = Array.from(event.dataTransfer.files);
     }
   }
 }
