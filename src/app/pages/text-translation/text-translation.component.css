@@ -1,0 +1,121 @@
+/* Container for centered content */
+.container {
+    margin: 50px auto; /* Center the container with automatic margins */
+    text-align: center; /* Center-align the text */
+    background-color: #fff; /* Background color for the container */
+    padding: 20px; /* Padding inside the container */
+    border-radius: 8px; /* Rounded corners for the container */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Style adjustments for file input */
+  input[type="file"] {
+    display: block; /* Block display to take up the full width */
+    margin: 20px auto; /* Center the input horizontally */
+    padding: 10px; /* Padding for better touch area */
+    border: 1px solid #ccc; /* Border to denote the clickable area */
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  /* Button styling */
+  button {
+    padding: 10px 40px; /* Padding for a larger click area */
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  .submitbtnalign{
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Add styles for the new attach button */
+  .btn-attach {
+    background-color: #007bff;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    user-select: none;
+  }
+  
+  .btn-attach:hover {
+    background-color: #0056b3;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  .uploaddisplay {
+    padding: 15px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .submitbtnalign {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .col-form-label {
+    text-align: right;
+  }
+  
+  .mt-5 {
+    margin-top: 3rem;
+  }
+  
+  .upload-container {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .drag-over {
+    border-color: #000;
+    background-color: #f0f0f0;
+  }
+  
+  .upload-container input[type="file"] {
+    display: none;
+  }
+  
+  .upload-container .btn-attach {
+    margin-top: 10px;
+    width: 130px;
+  }
+  
+  .drag-text {
+    margin-top: 10px;
+  }
+  
+  .btn-primary.disabled, .btn-primary:disabled {
+    width: 135px;
+  }
+  
+  .btnalign{
+    text-align: center;
+  }

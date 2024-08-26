@@ -43,8 +43,6 @@
       <label class="col-sm-3 col-form-label" ></label>
       <div class="col-sm-8 btnalign">
         <button [disabled]="selectedFiles.length === 0" type="button" class="btn btn-primary" (click)="onUpload()">Submit</button>
-        <a *ngIf="downloadUrl" [href]="downloadUrl" class="btn btn-success" download="transcribedText.txt">Download
-          Transcribed Text</a>
       </div>
     </div>
 

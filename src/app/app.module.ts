@@ -18,6 +18,7 @@ import { SpeechButtonComponent } from './speech-button/speech-button.component';
 import { AudioRecorderComponent } from './audio-recorder/audio-recorder.component';
 import { TranscribeTextDisplayComponent } from './shared/transcribe-text-display/transcribe-text-display.component';
 import { HomeComponent } from './pages/home/home.component';
+import { TextTranslationComponent } from './pages/text-translation/text-translation.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HomeComponent } from './pages/home/home.component';
     SpeechButtonComponent,
     AudioRecorderComponent,
     TranscribeTextDisplayComponent,
-    HomeComponent
+    HomeComponent,
+    TextTranslationComponent
   ],
   imports: [
     BrowserModule,

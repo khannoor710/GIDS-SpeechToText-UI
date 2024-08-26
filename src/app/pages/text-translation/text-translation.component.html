@@ -1,0 +1,20 @@
+<div class="container">
+    <h1>Text Translation</h1>
+    <div class="form-group row">
+        <label for="fileUpload" class="col-sm-3 col-form-label">Select files to translate:</label>
+        <div class="col-sm-8">
+          <div class="upload-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)">
+            <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)"
+              accept=".txt, .pdf, .doc, .docx" hidden>
+            <label for="fileUpload" class="btn btn-secondary btn-attach">+ Attach</label>
+            <p *ngIf="selectedFiles.length === 0" class="drag-text">Drag & Drop files here or click + Attach</p>
+            <ul>
+              <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <button (click)="translateFile()">Translate File</button>
+    <p>{{ translatedText }}</p>
+  </div>
